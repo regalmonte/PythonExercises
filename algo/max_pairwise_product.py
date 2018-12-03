@@ -1,7 +1,7 @@
 # python3
 
 
-def max_pairwise_product(numbers):
+def slow_max_pairwise_product(numbers):
     n = len(numbers)
     max_product = 0
     for first in range(n):

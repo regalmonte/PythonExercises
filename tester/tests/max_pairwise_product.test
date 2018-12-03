@@ -1,0 +1,10 @@
+directory: ..\algo
+filename: max_pairwise_product
+functionname: slow_max_pairwise_product
+numberofinputs: 1
+input1: array
+input1len: 2 10**5
+input1range: 1 10**5
+input2: int
+input2len: 1
+input2range: 1 10**5
