@@ -1,10 +1,6 @@
-directory: ..\algo
-filename: max_pairwise_product
-functionname: slow_max_pairwise_product
-numberofinputs: 1
-input1: array
-input1len: 2 10**5
-input1range: 1 10**5
-input2: int
-input2len: 1
-input2range: 1 10**5
+directory=..\algo
+filename=max_pairwise_product
+functionname=fast_max_pairwise_product
+numberofinputs=1
+input1=[type:array, lenrange0:2, lenrange1:10**3, valuerange0:1, valuerange1:10**3]
+input2=[type:int, lenrange0:1, lenrange1:1, valuerange0:1, valuerange1:10**5]

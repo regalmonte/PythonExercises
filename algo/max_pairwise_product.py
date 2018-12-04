@@ -8,6 +8,20 @@ def slow_max_pairwise_product(numbers):
         for second in range(first + 1, n):
             max_product = max(max_product,
                               numbers[first] * numbers[second])
+    return max_product
+
+
+def fast_max_pairwise_product(numbers):
+    n = len(numbers)
+    max1 = 0
+    max2 = 0
+    for i in range(n):
+        if max1 < i:
+            max2 = max1
+            max1 = i
+        elif max2 < i:
+            max2 = i
+    return max1*max2
 
     return max_product
 
@@ -15,4 +29,4 @@ def slow_max_pairwise_product(numbers):
 if __name__ == '__main__':
     input_n = int(input())
     input_numbers = [int(x) for x in input().split()]
-    print(max_pairwise_product(input_numbers))
+    print(fast_max_pairwise_product(input_numbers))
