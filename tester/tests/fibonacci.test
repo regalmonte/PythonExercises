@@ -1,0 +1,7 @@
+directory=..\algo
+filename=fibonacci
+functionname=calc_fib
+verifyfunction=slow_calc_fib
+numberoftests=100
+numberofinputs=1
+input1=[type:int, lenrange0:0, lenrange1:0, valuerange0:0, valuerange1:45]

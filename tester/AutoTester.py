@@ -8,6 +8,9 @@ import re
 import random
 import time
 MAX_ARR_LEN_SLOW = 1000
+MAX_VAL_SLOW = 20
+Verbose = 0
+
 
 class TestInput:
     def __init__(self, input_info):
@@ -77,7 +80,10 @@ class Tester:
                 res.append(int(random.uniform(arr_val0, arr_val1)))
             return res
         else: #if input_dictionary['type'] == 'int':
-            return int(random.uniform(0, 10**3))
+            arr_val0 = strToInt(input_dictionary['valuerange0'])
+            arr_val1 = strToInt(input_dictionary['valuerange1'])
+            arr_val1 = MAX_VAL_SLOW if mode == "Slow" else arr_val1
+            return int(random.uniform(arr_val0, arr_val1))
 
     def runOneTest(self, funcName, test_input):
         sys.path.insert(0, self.directory)
@@ -88,14 +94,19 @@ class Tester:
     def verifyTest(self):
         for i in range(int(self.numberoftests)):
             test_input = self.generateInput(0, 'Slow')
-            soln1 = self.runOneTest(self.functionname, test_input)
-            soln2 = self.runOneTest(self.verifyfunction, test_input)
-            print(test_input)
-            if soln1 != soln2:
-                print("Test", i, ": NG", soln1, soln2)
+            if Verbose > 1:
+                print("Test Input:", test_input)
+            s1 = self.runOneTest(self.functionname, test_input)
+            if Verbose > 1:
+                print("Solution:", s1)
+            s2 = self.runOneTest(self.verifyfunction, test_input)
+            if Verbose > 1:
+                print("Verifier:", s2)
+            if s1 != s2:
+                print("Test", i, ": NG", s1, s2)
                 return False
             else:
-                print("Test", i, ": OK", soln1, soln2)
+                print("Test", i, ": OK", s1, s2)
         return True
 
 
