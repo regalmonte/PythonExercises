@@ -12,18 +12,15 @@ def slow_max_pairwise_product(numbers):
 
 
 def fast_max_pairwise_product(numbers):
-    n = len(numbers)
     max1 = 0
     max2 = 0
-    for i in range(n):
+    for i in numbers:
         if max1 < i:
             max2 = max1
             max1 = i
         elif max2 < i:
             max2 = i
     return max1*max2
-
-    return max_product
 
 
 if __name__ == '__main__':

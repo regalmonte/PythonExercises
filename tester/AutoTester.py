@@ -1,12 +1,13 @@
 # python AutoTester.py <testfilename>
 # example:
-# python tester/AutoTester.py test/max_pairwise_product.test
+# python tester/AutoTester.py max_pairwise_product.test
 
 import sys
 import os
 import re
 import random
 import time
+MAX_ARR_LEN_SLOW = 1000
 
 class TestInput:
     def __init__(self, input_info):
@@ -22,7 +23,9 @@ class Tester:
         self.directory = ""
         self.filename = ""
         self.functionname = ""
+        self.verifyfunction = ""
         self.numberofinputs = 0
+        self.numberoftests = 1000
         self.inputList = []
 
     def readFile(self):
@@ -41,8 +44,12 @@ class Tester:
                 self.filename = info[1]
             elif info[0] == "functionname":
                 self.functionname = info[1]
+            elif info[0] == "verifyfunction":
+                self.verifyfunction = info[1]
             elif info[0] == "numberofinputs":
                 self.numberofinputs = info[1]
+            elif info[0] == "numberoftests":
+                self.numberoftests = info[1]
             elif input_pattern.match(info[0]):
                 self.inputList.append(TestInput(info[1]))
 
@@ -56,34 +63,49 @@ class Tester:
         for inp in self.inputList:
             print("input entry:", inp.details)
 
-    def generateInput(self, i):
+    def generateInput(self, i, mode="Fast"):
         input_dictionary = self.inputList[i].details
         if input_dictionary['type'] == 'array':
             arr_len0 = strToInt(input_dictionary['lenrange0'])
             arr_len1 = strToInt(input_dictionary['lenrange1'])
             arr_val0 = strToInt(input_dictionary['valuerange0'])
             arr_val1 = strToInt(input_dictionary['valuerange1'])
-
+            arr_len1 = MAX_ARR_LEN_SLOW if mode == "Slow" else arr_len1
             arr_len = int(random.uniform(arr_len0, arr_len1))
             res = []
             for j in range(arr_len):
                 res.append(int(random.uniform(arr_val0, arr_val1)))
             return res
-        else:
+        else: #if input_dictionary['type'] == 'int':
             return int(random.uniform(0, 10**3))
 
-    def runOneTest(self):
+    def runOneTest(self, funcName, test_input):
         sys.path.insert(0, self.directory)
         test_module = __import__(self.filename)
-        test_function: function = eval("test_module." + self.functionname)
-        test_input = self.generateInput(0)
-        test_function(test_input)
+        test_function: function = eval("test_module." + funcName)
+        return test_function(test_input)
+
+    def verifyTest(self):
+        for i in range(int(self.numberoftests)):
+            test_input = self.generateInput(0, 'Slow')
+            soln1 = self.runOneTest(self.functionname, test_input)
+            soln2 = self.runOneTest(self.verifyfunction, test_input)
+            print(test_input)
+            if soln1 != soln2:
+                print("Test", i, ": NG", soln1, soln2)
+                return False
+            else:
+                print("Test", i, ": OK", soln1, soln2)
+        return True
+
 
     def stressTest(self):
         start_time = time.time()
-        for i in range(10**3):
-            self.runOneTest()
-        print("\n\nTotal run time: %s seconds" % (time.time() - start_time))
+        n = int(self.numberoftests)
+        for i in range(n):
+            test_input = self.generateInput(0)
+            self.runOneTest(self.functionname, test_input )
+        print("\n\nAverage run time: %s seconds" % ((time.time() - start_time)/n))
 
 
 def strToInt(s):
@@ -97,7 +119,8 @@ if __name__ == "__main__":
     test = Tester(sys.argv[1])
     test.parseTestFile()
     test.printTestSummary()
-    test.stressTest()
+    if test.verifyTest():
+        test.stressTest()
     #content = readFile("./tests/" + sys.argv[1])
     #prepareTest(content)
 
