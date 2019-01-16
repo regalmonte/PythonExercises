@@ -1,3 +1,4 @@
+#command: python tester/AutoTester.py fibonacci.test
 directory=..\algo
 filename=fibonacci
 functionname=calc_fib

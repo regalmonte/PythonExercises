@@ -1,6 +1,13 @@
 # Uses python3
 import sys
 
+def gcd_fast(a, b):
+    if b == 0:
+        return a
+    r = a % b
+    return gcd_fast(b, r)
+
+
 def gcd_naive(a, b):
     current_gcd = 1
     for d in range(2, min(a, b) + 1):

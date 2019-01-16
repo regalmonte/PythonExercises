@@ -1,0 +1,9 @@
+#command: python tester/AutoTester.py fibonacci_huge.test
+directory=..\algo
+filename=fibonacci_huge
+functionname=get_fibonacci_huge_fast
+verifyfunction=get_fibonacci_huge_naive
+numberoftests=10
+numberofinputs=2
+input1=[type:int, lenrange0:0, lenrange1:0, valuerange0:1, valuerange1:10**18]
+input2=[type:int, lenrange0:0, lenrange1:0, valuerange0:2, valuerange1:10**3]

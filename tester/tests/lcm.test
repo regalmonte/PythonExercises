@@ -1,0 +1,9 @@
+#command: python tester/AutoTester.py lcm.test
+directory=..\algo
+filename=lcm
+functionname=lcm_fast
+verifyfunction=lcm_naive
+numberoftests=1000
+numberofinputs=1
+input1=[type:int, lenrange0:0, lenrange1:0, valuerange0:0, valuerange1:2*10**9]
+input1=[type:int, lenrange0:0, lenrange1:0, valuerange0:0, valuerange1:2*10**9]

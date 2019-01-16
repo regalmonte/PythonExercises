@@ -9,7 +9,7 @@ import random
 import time
 MAX_ARR_LEN_SLOW = 1000
 MAX_VAL_SLOW = 20
-Verbose = 0
+Verbose = 2
 
 
 class TestInput:
@@ -39,6 +39,10 @@ class Tester:
     def parseTestFile(self):
         content = self.readFile()
         for l in content:
+            if l.find("#") == 0:
+                continue
+            if l.find("=") < 0:
+                continue
             info = l.split("=")
             input_pattern = re.compile('input[0-9]+$')
             if info[0] == "directory":
@@ -89,11 +93,23 @@ class Tester:
         sys.path.insert(0, self.directory)
         test_module = __import__(self.filename)
         test_function: function = eval("test_module." + funcName)
-        return test_function(test_input)
+        numOfInputs = int(self.numberofinputs)
+        if  numOfInputs == 1:
+            return test_function(test_input)
+        elif numOfInputs == 2:
+            return test_function(test_input[0], test_input[1])
+        elif numOfInputs == 3:
+            return test_function(test_input[0], test_input[1], test_input[3])
+        else:
+            raise ValueError("Testing of function with more than 3 inputs is not yet implemented")
+
 
     def verifyTest(self):
         for i in range(int(self.numberoftests)):
-            test_input = self.generateInput(0, 'Slow')
+            test_input = ()
+            for j in range(int(self.numberofinputs)):
+                test_input = test_input + (self.generateInput(j, 'Slow'),)
+
             if Verbose > 1:
                 print("Test Input:", test_input)
             s1 = self.runOneTest(self.functionname, test_input)
@@ -103,19 +119,28 @@ class Tester:
             if Verbose > 1:
                 print("Verifier:", s2)
             if s1 != s2:
-                print("Test", i, ": NG", s1, s2)
+                if self.inputList[0].details['type'] == 'int':
+                    print("Test", test_input, ": NG", s1, s2)
+                else:
+                    print("Test", i, ": NG", s1, s2)
                 return False
             else:
-                print("Test", i, ": OK", s1, s2)
+                if self.inputList[0].details['type'] == 'int':
+                    print("Test", test_input, ": OK", s1, s2)
+                else:
+                    print("Test", i, ": OK", s1, s2)
         return True
-
 
     def stressTest(self):
         start_time = time.time()
         n = int(self.numberoftests)
         for i in range(n):
-            test_input = self.generateInput(0)
-            self.runOneTest(self.functionname, test_input )
+            test_input = ()
+            for j in range(int(self.numberofinputs)):
+                test_input = test_input + (self.generateInput(j),)
+
+            s1 = self.runOneTest(self.functionname, test_input)
+            print("test_input", i, ":", test_input, ":", s1)
         print("\n\nAverage run time: %s seconds" % ((time.time() - start_time)/n))
 
 

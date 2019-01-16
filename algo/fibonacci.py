@@ -4,7 +4,7 @@
 def calc_fib(n):
     p = [0, 1]
     for i in range(n-1):
-        p = [p[-1]] + [p[-1] + p[-2]]
+        p[-2], p[-1] = p[-1], p[-1] + p[-2]
     return p[-1] if n else n
 
 
