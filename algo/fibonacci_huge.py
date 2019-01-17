@@ -1,5 +1,4 @@
 # Uses python3
-import sys
 FiboNumbers = []
 
 
@@ -12,15 +11,13 @@ def findPeriod(n, m):
             FiboNumbers = p
             return i
     FiboNumbers = p
-    return n
+    return n + 1
 
 
 def get_fibonacci_huge_fast(n, m):
     if n < 2:
         return n
     period = findPeriod(n, m)
-    print(FiboNumbers)
-    print(n, m, period)
     return FiboNumbers[n % period] % m
 
 
@@ -37,8 +34,9 @@ def get_fibonacci_huge_naive(n, m):
     return current % m
 
 
-print("input 2 integers (n, m):", end=" ")
-input = sys.stdin.read();
-n, m = map(int, input.split())
-print(get_fibonacci_huge_fast(n, m))
-print(get_fibonacci_huge_naive(n, m))
+if __name__ == '__main__':
+    print("input 2 integers (n, m):", end=" ")
+    inp = input()
+    n, m = map(int, inp.split())
+    print(get_fibonacci_huge_fast(n, m))
+    print(get_fibonacci_huge_naive(n, m))

@@ -1,0 +1,8 @@
+#command: python tester/AutoTester.py fibonacci_sum_last_digit.test
+directory=..\algo
+filename=fibonacci_sum_last_digit
+functionname=fibonacci_sum_fast
+verifyfunction=fibonacci_sum_naive
+numberoftests=1000
+numberofinputs=1
+input1=[type:int, lenrange0:0, lenrange1:0, valuerange0:0, valuerange1:10**18]

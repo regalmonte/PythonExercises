@@ -9,7 +9,7 @@ import random
 import time
 MAX_ARR_LEN_SLOW = 1000
 MAX_VAL_SLOW = 20
-Verbose = 2
+Verbose = 0
 
 
 class TestInput:
@@ -95,7 +95,7 @@ class Tester:
         test_function: function = eval("test_module." + funcName)
         numOfInputs = int(self.numberofinputs)
         if  numOfInputs == 1:
-            return test_function(test_input)
+            return test_function(test_input[0])
         elif numOfInputs == 2:
             return test_function(test_input[0], test_input[1])
         elif numOfInputs == 3:
@@ -129,6 +129,7 @@ class Tester:
                     print("Test", test_input, ": OK", s1, s2)
                 else:
                     print("Test", i, ": OK", s1, s2)
+        print("Done Verification Test")
         return True
 
     def stressTest(self):
@@ -138,9 +139,9 @@ class Tester:
             test_input = ()
             for j in range(int(self.numberofinputs)):
                 test_input = test_input + (self.generateInput(j),)
-
+            print("test_input", i, ":", test_input, ":", end=" ")
             s1 = self.runOneTest(self.functionname, test_input)
-            print("test_input", i, ":", test_input, ":", s1)
+            print(s1)
         print("\n\nAverage run time: %s seconds" % ((time.time() - start_time)/n))
 
 
