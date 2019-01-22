@@ -8,7 +8,7 @@ import re
 import random
 import time
 MAX_ARR_LEN_SLOW = 1000
-MAX_VAL_SLOW = 20
+MAX_VAL_SLOW = 10000
 Verbose = 0
 
 
@@ -30,6 +30,7 @@ class Tester:
         self.numberofinputs = 0
         self.numberoftests = 1000
         self.inputList = []
+        self.condition = ""
 
     def readFile(self):
         with open(self.fname) as f:
@@ -59,6 +60,8 @@ class Tester:
                 self.numberoftests = info[1]
             elif input_pattern.match(info[0]):
                 self.inputList.append(TestInput(info[1]))
+            elif info[0] == "condition":
+                self.condition = info[1]
 
     def printTestSummary(self):
         print("Test Summary:")
@@ -92,17 +95,23 @@ class Tester:
     def runOneTest(self, funcName, test_input):
         sys.path.insert(0, self.directory)
         test_module = __import__(self.filename)
-        test_function: function = eval("test_module." + funcName)
+        test_function = eval("test_module." + funcName)
         numOfInputs = int(self.numberofinputs)
-        if  numOfInputs == 1:
+        if numOfInputs == 1:
             return test_function(test_input[0])
         elif numOfInputs == 2:
+            test_input = self.checkCondition(test_input)
             return test_function(test_input[0], test_input[1])
         elif numOfInputs == 3:
             return test_function(test_input[0], test_input[1], test_input[3])
         else:
             raise ValueError("Testing of function with more than 3 inputs is not yet implemented")
 
+    def checkCondition(self, testinput):
+        if (self.condition == "input2>input1" and testinput[0] > testinput[1]) or \
+                (self.condition == "input1>input2" and testinput[1] > testinput[0]):
+            return tuple([testinput[1], testinput[0]])
+        return testinput
 
     def verifyTest(self):
         for i in range(int(self.numberoftests)):

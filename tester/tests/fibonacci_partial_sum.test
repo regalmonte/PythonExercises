@@ -1,0 +1,10 @@
+#command: python tester/AutoTester.py fibonacci_partial_sum.test
+directory=..\algo
+filename=fibonacci_partial_sum
+functionname=fibonacci_partial_sum_fast
+verifyfunction=fibonacci_partial_sum_naive
+numberoftests=1000
+numberofinputs=2
+input1=[type:int, lenrange0:0, lenrange1:0, valuerange0:0, valuerange1:10**18]
+input2=[type:int, lenrange0:0, lenrange1:0, valuerange0:0, valuerange1:10**18]
+condition=input2>input1
